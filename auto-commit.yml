@@ -1,0 +1,32 @@
+name: Auto Commit Daily (programadorbox)
+
+on:
+  schedule:
+    - cron: '0 17 * * *'   # todos los días a las 13:00 hora Bolivia/Chile (UTC−4)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Configurar autor (seguro)
+        run: |
+          git config user.name "programadorbox-bot"
+          git config user.email "programadorbox@users.noreply.github.com"
+
+      - name: Crear o actualizar archivo diario
+        run: |
+          echo "Última actualización automática: $(date -u)" > ultima_actualizacion.txt
+
+      - name: Commit y push solo si hay cambios
+        run: |
+          git add ultima_actualizacion.txt
+          git diff --cached --quiet || (git commit -m "Auto update $(date -u)" && git push)
