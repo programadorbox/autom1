@@ -19,7 +19,7 @@ jobs:
 
       - name: Configurar autor (seguro)
         run: |
-          git config user.name "programadorbox-bot"
+          git config user.name "programadorbox"
           git config user.email "programadorbox@users.noreply.github.com"
 
       - name: Crear o actualizar archivo diario
